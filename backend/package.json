@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
     "express": "^4.18.2",
     "graphql": "^16.6.0",
@@ -24,7 +25,7 @@
     "uuidv4": "^6.2.13"
   },
   "scripts": {
-    "start": "nodemon src/index.js --ext js --exec babel-node",
+    "start": "node src/index.js ",
     "server": "nodemon src/index.js --ext js --exec babel-node"
   }
 }

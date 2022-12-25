@@ -1,43 +1,40 @@
-import { createPubSub, createSchema, createYoga } from 'graphql-yoga'
-import { createServer } from 'node:http'
-import { useServer } from 'graphql-ws/lib/use/ws'
-import { WebSocketServer } from 'ws'
-import * as fs from 'fs'
-import Query from './resolvers/Query';
-import Mutation from './resolvers/Mutation';
-import Subscription from './resolvers/Subscription';
-import ChatBoxModel from './models/ChatBoxModel'
+import { createPubSub, createSchema, createYoga } from "graphql-yoga";
+import { createServer } from "node:http";
+import { useServer } from "graphql-ws/lib/use/ws";
+import { WebSocketServer } from "ws";
+import * as fs from "fs";
+import Query from "./resolvers/Query.js";
+import Mutation from "./resolvers/Mutation.js";
+import Subscription from "./resolvers/Subscription.js";
+import ChatBoxModel from "./models/ChatBoxModel.js";
 
 const pubsub = createPubSub();
 
 const yoga = createYoga({
   schema: createSchema({
-    typeDefs: fs.readFileSync(
-      './src/schema.graphql',
-      'utf-8'
-    ),
+    typeDefs: fs.readFileSync("./src/schema.graphql", "utf-8"),
     resolvers: {
       Query,
       Mutation,
-      Subscription
+      Subscription,
     },
   }),
   context: {
     ChatBoxModel,
     pubsub,
   },
-  graphqlEndpoint: '/',   // uncomment this to send the app to: 4000/
+  graphqlEndpoint: "/", // uncomment this to send the app to: 4000/
   graphiql: {
-    subscriptionsProtocol: 'WS',
+    subscriptionsProtocol: "WS",
   },
 });
 
-const server = createServer(yoga)
+const server = createServer(yoga);
 
 const wsServer = new WebSocketServer({
   server: server,
   path: yoga.graphqlEndpoint,
-})
+});
 
 useServer(
   {
@@ -49,8 +46,8 @@ useServer(
           ...ctx,
           req: ctx.extra.request,
           socket: ctx.extra.socket,
-          params: msg.payload
-        })
+          params: msg.payload,
+        });
 
       const args = {
         schema,
@@ -60,16 +57,16 @@ useServer(
         contextValue: await contextFactory(),
         rootValue: {
           execute,
-          subscribe
-        }
-      }
+          subscribe,
+        },
+      };
 
-      const errors = validate(args.schema, args.document)
-      if (errors.length) return errors
-      return args
+      const errors = validate(args.schema, args.document);
+      if (errors.length) return errors;
+      return args;
     },
   },
-  wsServer,
-)
+  wsServer
+);
 
-export default server
+export default server;
