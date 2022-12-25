@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type":"commonjs",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon src/server.js --ext js --watch src --exec babel-node"
+    "server": "nodemon src/server.js --ext js --watch src --exec babel-node",
+    "start": "node server.js",
+    "build": "react-scripts build",
+    "start_react": "react-scripts start"
   },
   "author": "",
   "license": "ISC",
