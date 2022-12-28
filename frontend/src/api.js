@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: `https://wp111-hw9-dankong.herokuapp.com/`,
+  baseURL: `heroku-production-38c4.up.railway.app`,
 });
 
 export default instance;
